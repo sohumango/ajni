@@ -110,23 +110,19 @@ void FillStudentRecValuesToJni(JNIEnv * env, jobject jPosRec, SearchRecord* cPos
 /**
 * JNI method calling from JAVA
 */
-JNIEXPORT void JNICALL Java_com_test_Test_getStudentDetails( JNIEnv *env, jclass cls, jobjectArray arr)
+JNIEXPORT void JNICALL Java_com_test_Test_getStudentDetails( JNIEnv *env, jclass cls, jobjectArray jPosRecArray)
 {
-    assert(env->GetArrayLength(arr) == 1);
-    jobjectArray jPosRecArray = (jobjectArray)env->GetObjectArrayElement(arr, 0);
     jniPosRec = NULL;
     LoadJniPosRec(env);
     std::vector<SearchRecord*> searchRecordResult ;
     FillStudentRecordDetails(&searchRecordResult);
     printf("\nsearchRecordResult size is :%lu\n\n", searchRecordResult.size());
-    jPosRecArray = env->NewObjectArray(searchRecordResult.size(), jniPosRec->cls, NULL);
 
     for (size_t i = 0; i < searchRecordResult.size(); i++) {
         jobject jPosRec = env->NewObject(jniPosRec->cls, jniPosRec->constructortorID);
         FillStudentRecValuesToJni(env, jPosRec, searchRecordResult[i]);
         env->SetObjectArrayElement(jPosRecArray, i, jPosRec);
     }
-    env->SetObjectArrayElement(arr, 0, jPosRecArray);
     env->DeleteLocalRef(jPosRecArray);
     //return jPosRecArray;
 }
