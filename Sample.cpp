@@ -112,6 +112,10 @@ void FillStudentRecValuesToJni(JNIEnv * env, jobject jPosRec, SearchRecord* cPos
 */
 JNIEXPORT void JNICALL Java_com_test_Test_getStudentDetails( JNIEnv *env, jclass cls, jobjectArray jPosRecArray)
 {
+    if (jPosRecArray == NULL) {
+        printf("jPosRecArray is NULL\n");
+        return;
+    }
     jniPosRec = NULL;
     LoadJniPosRec(env);
     std::vector<SearchRecord*> searchRecordResult ;
